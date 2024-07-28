@@ -61,6 +61,7 @@ class Parul():
         url = "https://ums.paruluniversity.ac.in/StudentPanel/TTM_Attendance/TTM_Attendance_StudentAttendance.aspx"
         req = requests.get(url, cookies=self.cookies)
         soup = BeautifulSoup(req.text, 'html.parser')
+        name = soup.find("span",{"id":"ctl00_lblCurrentUsername"}).text
         total_slots = soup.find("span",{"id":"ctl00_cphPageContent_lblTotalLectureLabCount"}).text
         present_slots = soup.find("span",{"id":"ctl00_cphPageContent_lblPresentLectureLabCount"}).text
         absent_slots = soup.find("span",{"id":"ctl00_cphPageContent_lblAbsentLectureLabCount"}).text
@@ -79,6 +80,6 @@ class Parul():
             percent = present/total*100
             subjects.append({"no":no,"subject_code":subject_code,"subject_name":subject_name,"type":t_ype,"total":total,"present":present,"absent":absent,"percent":percent})
         
-        return {"total_slots":total_slots,"present_slots":present_slots,"absent_slots":absent_slots,"percent_age":percent_age,"subjects":subjects}
+        return {"total_slots":total_slots,"present_slots":present_slots,"absent_slots":absent_slots,"percent_age":percent_age,"name":name,"subjects":subjects}
     def get_timetable(self):
         pass
