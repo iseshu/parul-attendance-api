@@ -1,6 +1,6 @@
 import json
 import requests
-from bs4 import BeautifulSoup, SoupStrainer
+from bs4 import BeautifulSoup
 import random, string
 
 
@@ -64,6 +64,8 @@ class Parul():
         name = soup.find("span",{"id":"ctl00_lblCurrentUsername"}).text
         total_slots = soup.find("span",{"id":"ctl00_cphPageContent_lblTotalLectureLabCount"}).text
         present_slots = soup.find("span",{"id":"ctl00_cphPageContent_lblPresentLectureLabCount"}).text
+        image = soup.find("img",{"id":"ctl00_imgCurrentUserPhoto"})['src']
+        image = image if image.startswith("data:image") else "https://ums.paruluniversity.ac.in/Images/Faculty_NoImg.jpeg"
         absent_slots = soup.find("span",{"id":"ctl00_cphPageContent_lblAbsentLectureLabCount"}).text
         percent_age = soup.find("span",{"id":"ctl00_cphPageContent_lblPresentPCTCount"}).text
         table = soup.find("table",{"id":"tblAttendance"})
@@ -80,6 +82,6 @@ class Parul():
             percent = present/total*100
             subjects.append({"no":no,"subject_code":subject_code,"subject_name":subject_name,"type":t_ype,"total":total,"present":present,"absent":absent,"percent":percent})
         
-        return {"total_slots":total_slots,"present_slots":present_slots,"absent_slots":absent_slots,"percent_age":percent_age,"name":name,"subjects":subjects}
+        return {"total_slots":total_slots,"image":image,"present_slots":present_slots,"absent_slots":absent_slots,"percent_age":percent_age,"name":name,"subjects":subjects}
     def get_timetable(self):
         pass
